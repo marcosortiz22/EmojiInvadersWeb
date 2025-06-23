@@ -463,12 +463,20 @@ frameborder="1"
         info.hidden = debug_hidden
         box.hidden =  debug_hidden
 
+        // Add click handler to hide loading message
+        document.addEventListener('click', function() {
+            hideLoadingMessage();
+        });
+
+        // Hide loading message after 10 seconds as fallback
+        setTimeout(function() {
+            hideLoadingMessage();
+        }, 10000);
     }
 
     function custom_prerun(){
         // no python main and no (MEMFS + VFS) yet.
         console.log(__FILE__, "custom_prerun")
-
     }
 
     function custom_postrun(){
@@ -476,10 +484,7 @@ frameborder="1"
         console.log(__FILE__, "custom_postrun")
 
         // Hide loading message when game is ready
-        const loadingMessage = document.getElementById('loading-message');
-        if (loadingMessage) {
-            loadingMessage.style.display = 'none';
-        }
+        hideLoadingMessage();
 
         // prevent ff horizontal scroll
         window.addEventListener("keydown", function(e) {
@@ -488,7 +493,14 @@ frameborder="1"
                     e.preventDefault();
             }
         }, false);
+    }
 
+    function hideLoadingMessage() {
+        const loadingMessage = document.getElementById('loading-message');
+        if (loadingMessage) {
+            loadingMessage.style.display = 'none';
+            console.log("Loading message hidden");
+        }
     }
 
     function debug() {
